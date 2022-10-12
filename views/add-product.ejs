@@ -116,9 +116,10 @@
                     <div class="form-group mt-3">
                         <select class="form-select" name="category" aria-label="Default select example">
                             <option selected class="category">Category</option>
-                            <option value="shoes">shoes</option>
-                            <option value="sunglass">sunglasses</option>
-                            <option value="watches">watches</option>
+                            <% for(let i=0;i<cat.length;i++){ %> 
+                            <option value="<%= cat[i].category  %>"><%= cat[i].category  %> </option>
+                            <% } %> 
+                           
                         </select>
                     </div>
                     <div class="form-group mt-3">
@@ -171,9 +172,9 @@
                         <div class="form-group mt-3">
                             <select class="form-select" name="category" aria-label="Default select example">
                                 <option selected class="category">Category</option>
-                                <option value="shoes">shoes</option>
-                                <option value="sunglass">sunglasses</option>
-                                <option value="watches">watches</option>
+                                <% for(let i=0;i<cat.length;i++){ %> 
+                                    <option value="<%= cat[i].category  %>"><%= cat[i].category  %> </option>
+                                    <% } %> 
                             </select>
                         </div>
                         <div class="form-group mt-3">

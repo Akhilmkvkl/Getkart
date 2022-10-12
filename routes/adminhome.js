@@ -9,6 +9,7 @@ const product = require("../models/product");
 const upload = require("./upload");
 const { route } = require("./userhome");
 const offer = require("../models/offer model");
+const category=require('../models/category model')
 
 router.get("/block", (req, res) => {
   const userId = req.query.id;
@@ -49,7 +50,11 @@ router.get("/unblock", (req, res) => {
 
 router.get("/add-product", (req, res) => {
   session.login = true;
-  res.render("add-product", { docs: "" });
+  category.find()
+  .then((cat)=>{
+    res.render("add-product", { docs: "",cat});
+  })
+  
 });
 
 router.post("/addproduct", upload.any(), (req, res) => {
@@ -97,7 +102,11 @@ router.get("/update", (req, res) => {
   const id = req.query.id;
   product.findOne({ _id: id }).then((docs) => {
     if (docs) {
-      res.render("add-product", { docs });
+      category.find()
+      .then((cat)=>{
+        res.render("add-product", { docs,cat });
+      })
+      
     }
   });
 });
@@ -168,6 +177,17 @@ router.post("/addoffer", (req, res) => {
   console.log(req.body);
   const offerdetails = new offer({});
 });
+//category adding
+router.post('/add-category',(req,res)=>{
+console.log(req.body)
+const categorydetails = new category({
+  category:req.body.category
+})
+categorydetails.save()
+.then(()=>{
+  res.redirect('/adminhome/products')
+})
+})
 
 // adminside sales details
 
