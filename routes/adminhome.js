@@ -169,4 +169,19 @@ router.post("/addoffer", (req, res) => {
   const offerdetails = new offer({});
 });
 
+// adminside sales details
+
+router.get('/sales',(req,res)=>{
+  order.find()
+  .then((orders)=>{
+    product.find()
+    .then((products)=>{
+      console.log(products)
+      res.render('admin-sales',{orders,products})
+    })
+    
+  })
+  
+})
+
 module.exports = router;
