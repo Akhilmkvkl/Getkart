@@ -55,6 +55,24 @@ router.get("/cart", (req, res) => {
   }
 });
 
+//adding new address from user side at the time of checkout
+
+router.post('/add-address',(req,res)=>{
+  console.log(req.body)
+  const addressdetails=new address({
+    userid:ObjectId(session.userid),
+    address:req.body.address,
+    streetname:req.body.streetname,
+    state:req.body.state,
+    pincode:req.body.pincode
+    
+  })
+  addressdetails.save()
+  .then(()=>{
+    res.redirect('/')
+  })
+})
+
 //order  creation and it includes  the route to the razor pay
 
 router.post("/placeorder", (req, res) => {
@@ -73,13 +91,7 @@ router.post("/placeorder", (req, res) => {
         amount: session.price,
         status: "placed",
         payment: req.body.paymentMethod,
-        address: [
-          {
-            streetname: req.body.streetname,
-            pincode: req.body.pincode,
-            address: req.body.address,
-          },
-        ],
+        address: req.body.selectedAddress
       });
       orderdetails.save().then(() => {
         //stock operation

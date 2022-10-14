@@ -107,8 +107,9 @@ router.get("/checkout", (req, res) => {
     let price=req.query.id
     console.log(price)
     session.price=price
-    address.findOne({userid:ObjectId(session.userid)})
+    address.find({userid:ObjectId(session.userid)})
     .then((addressdetails)=>{
+      console.log(addressdetails)
       res.render("checkout", { docs,price,addressdetails});
     })
     .catch(()=>{

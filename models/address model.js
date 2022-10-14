@@ -16,6 +16,9 @@ const mongoose = require('mongoose')
         type:String,
         required:true
     },
+    state:{
+        type:String
+    },
     streetname:{
         type:String,
         required:true

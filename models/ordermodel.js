@@ -32,15 +32,9 @@ const orderschema= new schema({
         type:Boolean,
         require:true
     },
-    address:[
-        {
-            streetname:{type:String},
-            address:{type:String},
-            pincode:{type:String}
-        }
-            
-        
-    ],
+    address:{
+        type:String
+    },
         
     
     delivered:{
