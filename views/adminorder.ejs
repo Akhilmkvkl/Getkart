@@ -80,20 +80,12 @@
                 <div class="navbar align-self-center d-flex">
 
 
-                    <a class="nav-icon position-relative text-decoration-none" href="/userhome/cart">
-                        <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                        <span
-                            class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
-                    </a>
-                    <a class="nav-icon position-relative text-decoration-none" href="/userhome/profile">
-                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                        <span
-                            class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
-                    </a>
+                   
                 </div>
             </div>
 
         </div>
+        <a href="/logoutad">  <button type="button" class="btn btn-success">Logout</button></a>
     </nav>
 
 
@@ -109,6 +101,10 @@
         <label class="btn btn-secondary">
             <input type="radio" name="options" id="option3" autocomplete="off"><a href="/adminhome/delivered"><button
                     class="button">delivered</button></a>
+        </label>
+        <label class="btn btn-secondary">
+            <input type="radio" name="options" id="option3" autocomplete="off"><a href="/adminhome/Cancelled"><button
+                    class="button">Cancelled</button></a>
         </label>
     </div>
 
@@ -140,6 +136,9 @@
                     <% if(docs[i].status=="placed" ){ %>
                         <td><a href="/adminhome/confirm?id=<%= docs[i]._id  %> "><button type="button"
                                     class="btn btn-outline-success">Confirm</button></a></td>
+                                    <td><a href="/adminhome/cancell?id=<%= docs[i]._id  %> "><button type="button"
+                                        class="btn btn-outline-success">Cancell</button></a></td>
+    
 
                         <% } else if(docs[i].status=="confirmed" && docs[i].orderconfirmed ) { %>
 

@@ -370,7 +370,7 @@ router.get("/myorders", (req, res) => {
   }
 });
 
-//order cancellation it is stock related if the user cancelled it the stock will be re-include
+//order cancellation it is stock related if the user cancelled it the quantity will be readded to the stock
 
 router.get("/cancellorder", (req, res) => {
   console.log(req.query.id);

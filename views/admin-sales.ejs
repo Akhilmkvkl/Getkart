@@ -13,10 +13,11 @@
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
          <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"> 
 
+         <link rel="stylesheet" href="/public/stylesheets/chart.css">
 
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-
+</head>
         
 <body>
   <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
@@ -80,9 +81,101 @@
         </div>
 
     </div>
+    <a href="/logoutad">  <button type="button" class="btn btn-success">Logout</button></a>
 </nav>
 
-<br><br>
+<div    class="chart" >
+    <h3>product Based Demand</h3>
+<canvas id="myChart" width="200" height="400" aria-label="chart" role="img"></canvas>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div    class="chart" >
+    <h3>Overall sales Details</h3>
+    <canvas id="mysales" width="600" height="300" aria-label="chart" role="img"></canvas>
+    </div>  
+
+
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'pie',    
+    data: {
+        labels: ['shoes', 'Watches', 'sunglass'],
+        datasets: [{
+            label: 'Avg of product Demand',
+            data: [12, 17, 9],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+
+
+
+
+<script>
+    const ctxx = document.getElementById('mysales').getContext('2d');
+    const myCharts = new Chart(ctxx, {
+        type: 'line',    
+        data: {
+            labels: ['2017','2018','2019','2020', '2021', '2022'],
+            datasets: [{
+                label: 'avg of sale',
+                data: [12, 17, 9,19,6,16],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+    
+
 
  
   

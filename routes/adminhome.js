@@ -113,7 +113,7 @@ router.get("/update", (req, res) => {
 
 router.get("/orders", (req, res) => {
   if (session.adminlogin) {
-    order.find({ orderconfirmed: false, delivered: false }).then((docs) => {
+    order.find({ orderconfirmed: false, delivered: false,status:"placed" }).then((docs) => {
       console.log(docs);
       res.render("adminorder", { docs });
     });
@@ -144,6 +144,13 @@ router.get("/deliver", (req, res) => {
   });
 });
 
+router.get('/cancelled',(req,res)=>{
+  order.find({status:"cancelled"})
+  .then((docs)=>{
+    res.render('adminorder',{docs})
+  })
+})
+
 router.get("/vieworder", (req, res) => {
   const id = req.query.id;
   order.findOne({ _id: id }).then((docs) => {
@@ -166,6 +173,16 @@ router.get("/vieworder", (req, res) => {
     }
   });
 });
+
+///order cancellation
+
+router.get('/cancell',(req,res)=>{
+ const  id=req.query.id
+  order.updateOne({_id:id},{$set:{status:"cancelled"}})
+  .then(()=>{
+    res.redirect('/adminhome/orders')
+  })
+})
 
 //offer management
 
