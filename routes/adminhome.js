@@ -10,6 +10,7 @@ const upload = require("./upload");
 const { route } = require("./userhome");
 const offer = require("../models/offer model");
 const category=require('../models/category model')
+const coupon=require('../models/coupon model')
 
 router.get("/block", (req, res) => {
   const userId = req.query.id;
@@ -209,14 +210,48 @@ categorydetails.save()
 // adminside sales details
 
 router.get('/sales',(req,res)=>{
-  order.find()
-  .then((orders)=>{
-    product.find()
-    .then((products)=>{
-      console.log(products)
-      res.render('admin-sales',{orders,products})
-    })
+  currentYear = new Date();
+     
+  order.aggregate([
+    {
+   
+      $group: {
+        _id: "month",
+        totalSalesAmount: { $sum: "$amount" },
+        count: { $sum: 1 },
+      },
+    },
+  ])
+  .then((salesreport)=>{
+    console.log(salesreport)
+    console.log("hii all")
+    res.render('admin-sales')
+  })
+
+      
+
+  
     
+  
+  
+})
+
+//coupon management
+router.post('/add-coupon',(req,res)=>{
+  console.log(req.body)
+  const coupondetails=new coupon({
+    couponid:req.body.couponId,
+    couponvalue:req.body.value,
+    minamount:req.body.minvalue,
+    maxamount:req.body.maxamount,
+    uptodate:req.body.enddate,
+    fromdate:req.body.actdate,
+    
+  })
+  coupondetails.save()
+  .then(()=>{
+    console.log("coupon added successfully")
+    res.redirect('/adminhome/products')
   })
   
 })

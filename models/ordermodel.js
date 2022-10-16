@@ -23,6 +23,10 @@ const orderschema= new schema({
         
        
     }],
+    currentmonth:{
+        type:String,
+        required:true
+    },
     payment:{
              type:String,
 

@@ -12,6 +12,7 @@ const payhelper = require("../helpers/razorpay");
 const { json, response } = require("express");
 const { users } = require("../models/model");
 const paypal = require("paypal-rest-sdk");
+const coupon = require("../models/coupon model");
 
 router.get("/product", (req, res) => {
   const id = req.query.id;
@@ -77,6 +78,46 @@ router.post('/add-address',(req,res)=>{
 
 router.post("/placeorder", (req, res) => {
   console.log(req.body);
+  const ddate=new Date()
+  const month=ddate.getMonth()+1
+ switch (month) {
+  case "1":
+    month = "Jan";
+    break;
+  case "2":
+    month = "Feb";
+    break;
+  case "3":
+    month = "Mar";
+    break;
+  case "4":
+    month = "Apr";
+    break;
+  case "5":
+    month = "May";
+    break;
+  case "6":
+    month = "Jun";
+    break;
+  case "7":
+    month = "Jul";
+    break;
+  case "8":
+    month = "Aug";
+    break;
+  case "9":
+    month = "Sep";
+    break;
+  case "10":
+    month = "Aug";
+    break;
+  case "11":
+    month = "Nov";
+    break;
+  case "12":
+    month = "Dec";
+    break;
+ }
 
   cart
     .find({ userid: ObjectId(session.userid) }, { _id: 0 })
@@ -91,7 +132,8 @@ router.post("/placeorder", (req, res) => {
         amount: session.price,
         status: "placed",
         payment: req.body.paymentMethod,
-        address: req.body.selectedAddress
+        currentmonth:month
+        
       });
       orderdetails.save().then(() => {
         //stock operation
@@ -113,7 +155,7 @@ router.post("/placeorder", (req, res) => {
             console.log(products[i].quantity);
           }
         });
-
+    
         //for cart clearance
 
         console.log("ordeer created successfully");
@@ -433,5 +475,43 @@ router.get("/profile", (req, res) => {
     res.redirect("/login");
   }
 });
+
+//coupon application
+
+router.post("/applycoupon",(req,res)=>{
+  const user=ObjectId(session.userid)
+  console.log(req.body)
+  const couponId=req.body.res
+  const amount=req.body.amount
+  console.log("this is given id",couponId)
+  console.log("this is amount",amount);
+
+  coupon.findOne({couponid:couponId})
+  .then((res)=>{
+    console.log(res)
+    if(res){
+    coupon.findOne({couponid:couponId,usedcustomers:{$elemMatch:{userid:user}}})
+    .then((result)=>{
+      console.log(result)
+      if(result){
+        console.log("coupon already applied")
+      }else{
+       if( res.minamount > amount || res.maxamount < amount){
+          console.log("this coupon cant't apply with this amount")
+       }else if(res.fromdate > Date.now() || res.uptodate < Date.now()){
+        console.log("Coupon not valid in this date")
+       }else{
+        coupon.updateOne({couponid:couponId},{$push:{usedcustomers:{userid:user}}})
+        .then(()=>{
+          console.log("coupon updated successfully")
+        })
+       }
+      }
+    })
+  }else{
+    console.log("Coupon not valid")
+  }
+  })
+})
 
 module.exports = router;
