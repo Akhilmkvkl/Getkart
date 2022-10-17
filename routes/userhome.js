@@ -13,6 +13,11 @@ const { json, response } = require("express");
 const { users } = require("../models/model");
 const paypal = require("paypal-rest-sdk");
 const coupon = require("../models/coupon model");
+var couponvalue = 0;
+let validation = {
+  couponerr: false,
+  couponsucces:false,
+};
 
 router.get("/product", (req, res) => {
   const id = req.query.id;
@@ -43,10 +48,13 @@ router.get("/cart", (req, res) => {
         }
 
         console.log(FinalAmount);
-        const finalprice = FinalAmount + 50;
+        const finalprice = FinalAmount + 50 - couponvalue;
         console.log(finalprice);
 
-        res.render("cart", { docs, FinalAmount, finalprice });
+        res.render("cart", { docs, FinalAmount, finalprice, validation });
+        couponvalue = 0;
+        validation.couponerr=false
+        validation.couponsucces=false
       })
       .catch((err) => {
         console.log(err);
@@ -58,66 +66,64 @@ router.get("/cart", (req, res) => {
 
 //adding new address from user side at the time of checkout
 
-router.post('/add-address',(req,res)=>{
-  console.log(req.body)
-  const addressdetails=new address({
-    userid:ObjectId(session.userid),
-    address:req.body.address,
-    streetname:req.body.streetname,
-    state:req.body.state,
-    pincode:req.body.pincode
-    
-  })
-  addressdetails.save()
-  .then(()=>{
-    res.redirect('/')
-  })
-})
+router.post("/add-address", (req, res) => {
+  console.log(req.body);
+  const addressdetails = new address({
+    userid: ObjectId(session.userid),
+    address: req.body.address,
+    streetname: req.body.streetname,
+    state: req.body.state,
+    pincode: req.body.pincode,
+  });
+  addressdetails.save().then(() => {
+    res.redirect("/");
+  });
+});
 
 //order  creation and it includes  the route to the razor pay
 
 router.post("/placeorder", (req, res) => {
   console.log(req.body);
-  const ddate=new Date()
-  const month=ddate.getMonth()+1
- switch (month) {
-  case "1":
-    month = "Jan";
-    break;
-  case "2":
-    month = "Feb";
-    break;
-  case "3":
-    month = "Mar";
-    break;
-  case "4":
-    month = "Apr";
-    break;
-  case "5":
-    month = "May";
-    break;
-  case "6":
-    month = "Jun";
-    break;
-  case "7":
-    month = "Jul";
-    break;
-  case "8":
-    month = "Aug";
-    break;
-  case "9":
-    month = "Sep";
-    break;
-  case "10":
-    month = "Aug";
-    break;
-  case "11":
-    month = "Nov";
-    break;
-  case "12":
-    month = "Dec";
-    break;
- }
+  const ddate = new Date();
+  const month = ddate.getMonth() + 1;
+  switch (month) {
+    case "1":
+      month = "Jan";
+      break;
+    case "2":
+      month = "Feb";
+      break;
+    case "3":
+      month = "Mar";
+      break;
+    case "4":
+      month = "Apr";
+      break;
+    case "5":
+      month = "May";
+      break;
+    case "6":
+      month = "Jun";
+      break;
+    case "7":
+      month = "Jul";
+      break;
+    case "8":
+      month = "Aug";
+      break;
+    case "9":
+      month = "Sep";
+      break;
+    case "10":
+      month = "Aug";
+      break;
+    case "11":
+      month = "Nov";
+      break;
+    case "12":
+      month = "Dec";
+      break;
+  }
 
   cart
     .find({ userid: ObjectId(session.userid) }, { _id: 0 })
@@ -132,8 +138,7 @@ router.post("/placeorder", (req, res) => {
         amount: session.price,
         status: "placed",
         payment: req.body.paymentMethod,
-        currentmonth:month
-        
+        currentmonth: month,
       });
       orderdetails.save().then(() => {
         //stock operation
@@ -155,7 +160,7 @@ router.post("/placeorder", (req, res) => {
             console.log(products[i].quantity);
           }
         });
-    
+
         //for cart clearance
 
         console.log("ordeer created successfully");
@@ -430,32 +435,33 @@ router.get("/cancellorder", (req, res) => {
   console.log(req.query.id);
   const id = req.query.id;
 
-  order.findOne({_id:ObjectId(id),userid:ObjectId(session.userid)},{_id:0,products:1})
-  .then((products)=>{
-    
-    console.log(products)
-    const item = products.products
-    console.log('what is this ');
-    console.log(item)
-    for(let i=0;i<item.length;i++){
-      product.updateMany({_id:ObjectId(item[i].productid)},{$inc:{stock:item[i].quantity}})
-      .catch((err)=>{
-        console.log(err);
-      })
-    }
-    
-
-  })
-
+  order
+    .findOne(
+      { _id: ObjectId(id), userid: ObjectId(session.userid) },
+      { _id: 0, products: 1 }
+    )
+    .then((products) => {
+      console.log(products);
+      const item = products.products;
+      console.log("what is this ");
+      console.log(item);
+      for (let i = 0; i < item.length; i++) {
+        product
+          .updateMany(
+            { _id: ObjectId(item[i].productid) },
+            { $inc: { stock: item[i].quantity } }
+          )
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
 
   order
     .deleteOne({ userid: ObjectId(session.userid), _id: ObjectId(id) })
     .then(() => {
       console.log("order cancelled successfully");
       res.redirect("/userhome/order");
-
-
-
     });
 });
 router.get("/success", (req, res) => {
@@ -478,40 +484,64 @@ router.get("/profile", (req, res) => {
 
 //coupon application
 
-router.post("/applycoupon",(req,res)=>{
-  const user=ObjectId(session.userid)
-  console.log(req.body)
-  const couponId=req.body.res
-  const amount=req.body.amount
-  console.log("this is given id",couponId)
-  console.log("this is amount",amount);
+router.post("/applycoupon", (req, res) => {
+  const user = ObjectId(session.userid);
+  console.log(req.body);
+  const couponId = req.body.res;
+  const amount = req.body.amount;
+  console.log("this is given id", couponId);
+  console.log("this is amount", amount);
 
-  coupon.findOne({couponid:couponId})
-  .then((res)=>{
-    console.log(res)
-    if(res){
-    coupon.findOne({couponid:couponId,usedcustomers:{$elemMatch:{userid:user}}})
-    .then((result)=>{
-      console.log(result)
-      if(result){
-        console.log("coupon already applied")
-      }else{
-       if( res.minamount > amount || res.maxamount < amount){
-          console.log("this coupon cant't apply with this amount")
-       }else if(res.fromdate > Date.now() || res.uptodate < Date.now()){
-        console.log("Coupon not valid in this date")
-       }else{
-        coupon.updateOne({couponid:couponId},{$push:{usedcustomers:{userid:user}}})
-        .then(()=>{
-          console.log("coupon updated successfully")
+  coupon.findOne({ couponid: couponId }).then((ress) => {
+    const value = ress.couponvalue;
+    console.log(res);
+    if (ress) {
+      coupon
+        .findOne({
+          couponid: couponId,
+          usedcustomers: { $elemMatch: { userid: user } },
         })
-       }
-      }
-    })
-  }else{
-    console.log("Coupon not valid")
-  }
-  })
-})
+        .then((result) => {
+          console.log(result);
+          if (result) {
+            console.log("coupon already applied");
+            validation.couponerr = true;
+            res.send({change:true})
+          } else {
+            if (ress.minamount > amount || ress.maxamount < amount) {
+              console.log("this coupon cant't apply with this amount");
+              validation.couponerr=true
+              res.send({change:true})
+            } else if (
+              ress.fromdate > Date.now() ||
+              ress.uptodate < Date.now()
+            ) {
+              console.log("Coupon not valid in this date");
+              validation.couponerr = true;
+              res.send({change:true})
+            } else {
+              coupon
+                .updateOne(
+                  { couponid: couponId },
+                  { $push: { usedcustomers: { userid: user } } }
+                )
+                .then(() => {
+                  console.log("coupon updated successfully");
+                  couponvalue = value;
+                  validation.couponsucces=true
+                  res.send({change:true});
+                });
+            }
+          }
+        });
+    } else {
+      validation.couponerr=true
+      console.log("Coupon not valid");
+      res.send(change=true)
+    }
+  });
+});
+
+//coupon application compleated
 
 module.exports = router;

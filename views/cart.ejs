@@ -128,7 +128,7 @@
 
                     <div class="mb-4 pb-2">
                       <select class="select">
-                        <option value="1">Standard-Delivery- 100</option>
+                        <option value="1">Standard-Delivery- 50</option>
 
 
                       </select>
@@ -144,16 +144,21 @@
                         <button type="submit" class="btn btn-link">apply</button>
                       </div>
                     </form>
+                    <% if(validation.couponerr){ %> 
+                      <p style="color: red;">Cant't apply this coupon !</p>
+                      <% }else if(validation. couponsucces){%> 
+                        <p style="color:green;">Coupon applied successfully !</p>
+                        <% } %> 
                     </div>
 
                     <hr class="my-4">
 
                     <div class="d-flex justify-content-between mb-5">
                       <h5 class="text-uppercase">Total price</h5>
-
-                      <strong><span id="finalcost">
+                        <input type="text" id="finalamount" hidden value="<%= finalprice %>">
+                      <span id="finalcost">
                           <%= finalprice %>
-                        </span></strong>
+                        </span></strong>  
                     </div>
 
                     <a onclick="" href="/cart/checkout?id=<%= finalprice  %> "><button type="submit"
@@ -184,14 +189,13 @@
       $.ajax({
         url:'/userhome/applycoupon',
         method:'post',
-        data:{res:"ACTIVE500",amount:"3445"},
+        data:{res:$('#form3Examplea2').val(),amount:$('#finalamount').val()},
         success:(response)=>{
           if(response.change){
-            console.log("applied")
+            
             location.reload()
           }
         }
-        
       })
     })
   </script>
