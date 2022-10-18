@@ -16,8 +16,10 @@ const coupon = require("../models/coupon model");
 var couponvalue = 0;
 let validation = {
   couponerr: false,
-  couponsucces:false,
+  couponsucces: false,
 };
+let ddate = new Date();
+let month = ddate.getMonth() + 1;
 
 router.get("/product", (req, res) => {
   const id = req.query.id;
@@ -33,6 +35,8 @@ router.get("/product", (req, res) => {
       console.log(err);
     });
 });
+
+// cart operation
 
 router.get("/cart", (req, res) => {
   if (session.login && session.userid) {
@@ -53,8 +57,8 @@ router.get("/cart", (req, res) => {
 
         res.render("cart", { docs, FinalAmount, finalprice, validation });
         couponvalue = 0;
-        validation.couponerr=false
-        validation.couponsucces=false
+        validation.couponerr = false;
+        validation.couponsucces = false;
       })
       .catch((err) => {
         console.log(err);
@@ -84,46 +88,6 @@ router.post("/add-address", (req, res) => {
 
 router.post("/placeorder", (req, res) => {
   console.log(req.body);
-  const ddate = new Date();
-  const month = ddate.getMonth() + 1;
-  switch (month) {
-    case "1":
-      month = "Jan";
-      break;
-    case "2":
-      month = "Feb";
-      break;
-    case "3":
-      month = "Mar";
-      break;
-    case "4":
-      month = "Apr";
-      break;
-    case "5":
-      month = "May";
-      break;
-    case "6":
-      month = "Jun";
-      break;
-    case "7":
-      month = "Jul";
-      break;
-    case "8":
-      month = "Aug";
-      break;
-    case "9":
-      month = "Sep";
-      break;
-    case "10":
-      month = "Aug";
-      break;
-    case "11":
-      month = "Nov";
-      break;
-    case "12":
-      month = "Dec";
-      break;
-  }
 
   cart
     .find({ userid: ObjectId(session.userid) }, { _id: 0 })
@@ -506,19 +470,19 @@ router.post("/applycoupon", (req, res) => {
           if (result) {
             console.log("coupon already applied");
             validation.couponerr = true;
-            res.send({change:true})
+            res.send({ change: true });
           } else {
             if (ress.minamount > amount || ress.maxamount < amount) {
               console.log("this coupon cant't apply with this amount");
-              validation.couponerr=true
-              res.send({change:true})
+              validation.couponerr = true;
+              res.send({ change: true });
             } else if (
               ress.fromdate > Date.now() ||
               ress.uptodate < Date.now()
             ) {
               console.log("Coupon not valid in this date");
               validation.couponerr = true;
-              res.send({change:true})
+              res.send({ change: true });
             } else {
               coupon
                 .updateOne(
@@ -528,16 +492,16 @@ router.post("/applycoupon", (req, res) => {
                 .then(() => {
                   console.log("coupon updated successfully");
                   couponvalue = value;
-                  validation.couponsucces=true
-                  res.send({change:true});
+                  validation.couponsucces = true;
+                  res.send({ change: true });
                 });
             }
           }
         });
     } else {
-      validation.couponerr=true
+      validation.couponerr = true;
       console.log("Coupon not valid");
-      res.send(change=true)
+      res.send((change = true));
     }
   });
 });

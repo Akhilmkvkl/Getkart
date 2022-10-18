@@ -9,8 +9,8 @@ const product = require("../models/product");
 const upload = require("./upload");
 const { route } = require("./userhome");
 const offer = require("../models/offer model");
-const category=require('../models/category model')
-const coupon=require('../models/coupon model')
+const category = require("../models/category model");
+const coupon = require("../models/coupon model");
 
 router.get("/block", (req, res) => {
   const userId = req.query.id;
@@ -51,11 +51,9 @@ router.get("/unblock", (req, res) => {
 
 router.get("/add-product", (req, res) => {
   session.login = true;
-  category.find()
-  .then((cat)=>{
-    res.render("add-product", { docs: "",cat});
-  })
-  
+  category.find().then((cat) => {
+    res.render("add-product", { docs: "", cat });
+  });
 });
 
 router.post("/addproduct", upload.any(), (req, res) => {
@@ -103,35 +101,42 @@ router.get("/update", (req, res) => {
   const id = req.query.id;
   product.findOne({ _id: id }).then((docs) => {
     if (docs) {
-      category.find()
-      .then((cat)=>{
-        res.render("add-product", { docs,cat });
-      })
-      
+      category.find().then((cat) => {
+        res.render("add-product", { docs, cat });
+      });
     }
   });
 });
 
 router.get("/orders", (req, res) => {
   if (session.adminlogin) {
-    order.find({ orderconfirmed: false, delivered: false,status:"placed" }).then((docs) => {
-      console.log(docs);
-      res.render("adminorder", { docs });
-    });
+    order
+      .find({ orderconfirmed: false, delivered: false, status: "placed" })
+      .then((docs) => {
+        console.log(docs);
+        res.render("adminorder", { docs });
+      });
   } else {
     res.redirect("/adminlogin");
   }
 });
 router.get("/confirm", (req, res) => {
   const id = req.query.id;
-  order.updateOne({ _id: id }, { $set: { orderconfirmed: true,status:"confirmed" } }).then(() => {
-    res.redirect("/adminhome/orders");
-  });
+  order
+    .updateOne(
+      { _id: id },
+      { $set: { orderconfirmed: true, status: "confirmed" } }
+    )
+    .then(() => {
+      res.redirect("/adminhome/orders");
+    });
 });
 router.get("/confirmed", (req, res) => {
-  order.find({ orderconfirmed: true, delivered: false , status:"confirmed" }).then((docs) => {
-    res.render("adminorder", { docs });
-  });
+  order
+    .find({ orderconfirmed: true, delivered: false, status: "confirmed" })
+    .then((docs) => {
+      res.render("adminorder", { docs });
+    });
 });
 router.get("/delivered", (req, res) => {
   order.find({ orderconfirmed: true, delivered: true }).then((docs) => {
@@ -140,17 +145,18 @@ router.get("/delivered", (req, res) => {
 });
 router.get("/deliver", (req, res) => {
   const id = req.query.id;
-  order.updateOne({ _id: id }, { $set: { delivered: true,status:"delivered" } }).then(() => {
-    res.redirect("/adminhome/confirmed");
-  });
+  order
+    .updateOne({ _id: id }, { $set: { delivered: true, status: "delivered" } })
+    .then(() => {
+      res.redirect("/adminhome/confirmed");
+    });
 });
 
-router.get('/cancelled',(req,res)=>{
-  order.find({status:"cancelled"})
-  .then((docs)=>{
-    res.render('adminorder',{docs})
-  })
-})
+router.get("/cancelled", (req, res) => {
+  order.find({ status: "cancelled" }).then((docs) => {
+    res.render("adminorder", { docs });
+  });
+});
 
 router.get("/vieworder", (req, res) => {
   const id = req.query.id;
@@ -177,13 +183,12 @@ router.get("/vieworder", (req, res) => {
 
 ///order cancellation
 
-router.get('/cancell',(req,res)=>{
- const  id=req.query.id
-  order.updateOne({_id:id},{$set:{status:"cancelled"}})
-  .then(()=>{
-    res.redirect('/adminhome/orders')
-  })
-})
+router.get("/cancell", (req, res) => {
+  const id = req.query.id;
+  order.updateOne({ _id: id }, { $set: { status: "cancelled" } }).then(() => {
+    res.redirect("/adminhome/orders");
+  });
+});
 
 //offer management
 
@@ -196,64 +201,57 @@ router.post("/addoffer", (req, res) => {
   const offerdetails = new offer({});
 });
 //category adding
-router.post('/add-category',(req,res)=>{
-console.log(req.body)
-const categorydetails = new category({
-  category:req.body.category
-})
-categorydetails.save()
-.then(()=>{
-  res.redirect('/adminhome/products')
-})
-})
+router.post("/add-category", (req, res) => {
+  console.log(req.body);
+  const categorydetails = new category({
+    category: req.body.category,
+  });
+  categorydetails.save().then(() => {
+    res.redirect("/adminhome/products");
+  });
+});
 
-// adminside sales details
+// adminside sales details via 
 
-router.get('/sales',(req,res)=>{
-  currentYear = new Date();
-     
-  order.aggregate([
-    {
-   
-      $group: {
-        _id: "month",
-        totalSalesAmount: { $sum: "$amount" },
-        count: { $sum: 1 },
+router.get("/sales", (req, res) => {
+ const  label=[]
+
+  order
+    .aggregate([
+      {
+        $group: {
+          _id: "$currentmonth",count:{$sum:1}
+         
+        },
       },
-    },
-  ])
-  .then((salesreport)=>{
-    console.log(salesreport)
-    console.log("hii all")
-    res.render('admin-sales')
-  })
-
-      
-
-  
-    
-  
-  
-})
+    ])
+    .then((salesreport) => {
+      console.log(salesreport);
+      for(i=0;i<salesreport.length;i++){
+        console.log(salesreport[i].count)
+        label.push(salesreport[i].count)
+      }
+      console.log("hii all",label);
+      res.render("admin-sales",{salesreport,label});
+    });
+});
 
 //coupon management
-router.post('/add-coupon',(req,res)=>{
-  console.log(req.body)
-  const coupondetails=new coupon({
-    couponid:req.body.couponId,
-    couponvalue:req.body.value,
-    minamount:req.body.minvalue,
-    maxamount:req.body.maxamount,
-    uptodate:req.body.enddate,
-    fromdate:req.body.actdate,
-    
-  })
-  coupondetails.save()
-  .then(()=>{
-    console.log("coupon added successfully")
-    res.redirect('/adminhome/products')
-  })
-  
-})
+
+router.post("/add-coupon", (req, res) => {
+  console.log(req.body);
+  const coupondetails = new coupon({
+    couponid: req.body.couponId,
+    couponvalue: req.body.value,
+    minamount: req.body.minvalue,
+    maxamount: req.body.maxamount,
+    uptodate: req.body.enddate,
+    fromdate: req.body.actdate,
+  });
+  coupondetails.save().then(() => {
+    console.log("coupon added successfully");
+    res.redirect("/adminhome/products");
+  });
+});
 
 module.exports = router;
