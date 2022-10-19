@@ -15,7 +15,7 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-         <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"> 
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="/public/stylesheets/chart.css">
@@ -99,11 +99,18 @@
         <a href="/logoutad"> <button type="button" class="btn btn-success">Logout</button></a>
     </nav>
     <ul hidden>
-      <% for(let i=0;i<label.length;i++){ %> 
-            <input type="text" id="sales" value="<%= label %> ">
-            <% } %> 
+        <% for(let i=0;i<label.length;i++){ %>
+            <input type="text" id="sales" value="<%= [label] %> ">
+
+            <% } %>
     </ul>
-   
+    <ul hidden>
+        <% for(let i=0;i<key.length;i++){ %>
+            <input type="text" id="key" value="<%= [key] %> ">
+
+            <% } %>
+    </ul>
+
     <br><br><br><br><br><br><br><br><br><br><br><br><br>
     <div class="chart1" style="width: 70vw; height: 70vh; padding-left: 19vw;">
         <h3>Overall sales Details</h3>
@@ -111,23 +118,45 @@
     </div>
 
     <script>
-       
-        let data = document.getElementById('sales').value
-        console.log('hii',data)
+
+        const data = document.getElementById('sales')
+        const key = document.getElementById('key')
+        console.log(key)
+        console.log('hii', data)
         let labels = [];
-       
-        for (let i = 0; i < data.length; i++) {
-            labels.push(data[i])
-            
+        let field = []
+        for (x in data) {
+            if (x <= data.length) {
+                labels.push(data[x].value)
+
+            }
+
         }
-        console.log(labels)
+        for (x in key) {
+            if (x <= data.length) {
+                field.push(key[x].value)
+
+            }
+
+        }
+
+        
+
+
+
+
+
        
+
+        console.log(labels)
+        console.log(field)
+        
 
         const ctxx = document.getElementById('mysales').getContext('2d');
         const myCharts = new Chart(ctxx, {
             type: 'bar',
             data: {
-                labels: ['jan', 'feb', 'March', 'april', 'May', 'june', 'julay', 'aug', 'sep', 'oct', 'nov', 'dec'],
+                labels: field,
                 datasets: [{
                     label: 'avg of sale',
                     data: labels,
@@ -149,7 +178,7 @@
                     ],
                     borderWidth: 1
                 }]
-        
+
             },
             options: {
                 scales: {
@@ -160,20 +189,20 @@
             }
         });
     </script>
-    
-
-
- 
-  
-  
-  
 
 
 
-  
-    
-   
-  
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -18,10 +18,14 @@ let validation = {
   couponerr: false,
   couponsucces: false,
 };
+// date and time operations for common use
+
 let ddate = new Date();
 let month = ddate.getMonth() + 1;
+const tis = ddate.toISOString().split("T")[0];
 
 router.get("/product", (req, res) => {
+  console.log(tis, "kkkkkkk");
   const id = req.query.id;
   product
     .findOne({ _id: id })
@@ -92,13 +96,54 @@ router.post("/placeorder", (req, res) => {
   cart
     .find({ userid: ObjectId(session.userid) }, { _id: 0 })
     .then((docs) => {
+      switch (month) {
+        case 1:
+          month = "Jan";
+          break;
+        case 2:
+          month = "Feb";
+          break;
+        case 3:
+          month = "Mar";
+          break;
+        case 4:
+          month = "Apr";
+          break;
+        case 5:
+          month = "May";
+          break;
+        case 6:
+          month = "Jun";
+          break;
+        case 7:
+          month = "Jul";
+          break;
+        case 8:
+          month = "Aug";
+          break;
+        case 9:
+          month = "Sep";
+          break;
+        case 10:
+          month = "Oct";
+          break;
+        case 11:
+          month = "Nov";
+          break;
+        case 12:
+          month = "Dec";
+          break;
+        default:
+          console.log("someting wrong");
+      }
+      console.log(month);
       console.log(docs);
       const orderdetails = new order({
         userid: ObjectId(session.userid),
         products: docs,
         orderconfirmed: false,
         delivered: false,
-        Date: Date(),
+        Date: tis,
         amount: session.price,
         status: "placed",
         payment: req.body.paymentMethod,

@@ -215,6 +215,7 @@ router.post("/add-category", (req, res) => {
 
 router.get("/sales", (req, res) => {
  const  label=[]
+ const key=[]
 
   order
     .aggregate([
@@ -228,11 +229,12 @@ router.get("/sales", (req, res) => {
     .then((salesreport) => {
       console.log(salesreport);
       for(i=0;i<salesreport.length;i++){
-        console.log(salesreport[i].count)
+        key.push(salesreport[i]._id)
         label.push(salesreport[i].count)
       }
       console.log("hii all",label);
-      res.render("admin-sales",{salesreport,label});
+      console.log(key);
+      res.render("admin-sales",{salesreport,label,key});
     });
 });
 
