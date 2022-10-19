@@ -100,13 +100,13 @@
     </nav>
     <ul hidden>
         <% for(let i=0;i<label.length;i++){ %>
-            <input type="text" id="sales" value="<%= [label] %> ">
+            <input type="text" class="sales" value="<%= label[i] %> ">
 
             <% } %>
     </ul>
     <ul hidden>
         <% for(let i=0;i<key.length;i++){ %>
-            <input type="text" id="key" value="<%= [key] %> ">
+            <input type="text" class="key" value="<%= key[i] %> ">
 
             <% } %>
     </ul>
@@ -119,8 +119,8 @@
 
     <script>
 
-        const data = document.getElementById('sales')
-        const key = document.getElementById('key')
+        const data = document.getElementsByClassName('sales')
+        const key = document.getElementsByClassName('key')
         console.log(key)
         console.log('hii', data)
         let labels = [];

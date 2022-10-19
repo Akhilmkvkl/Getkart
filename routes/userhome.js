@@ -123,9 +123,9 @@ router.post("/placeorder", (req, res) => {
           break;
         case 9:
           month = "Sep";
-          break;
+          break; 
         case 10:
-          month = "Oct";
+          month = "Feb";
           break;
         case 11:
           month = "Nov";

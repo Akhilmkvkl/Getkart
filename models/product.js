@@ -1,6 +1,6 @@
 const mongoose=require("mongoose");
 const { array } = require("../routes/upload");
-// const { array } = require("../routes/upload");
+
 const Schema=mongoose.Schema
 const productschema=new Schema({
 

@@ -63,6 +63,8 @@ router.post("/addproduct", upload.any(), (req, res) => {
     discription: req.body.discription,
     stock: req.body.stock,
     category: req.body.category,
+    sellingprice:req.body.price,
+    constsellingprice:req.body.price,
     subcategory: req.body.subcategory,
     image1: req.files[0] && req.files[0].filename ? req.files[0].filename : "",
     image2: req.files[1] && req.files[1].filename ? req.files[1].filename : "",

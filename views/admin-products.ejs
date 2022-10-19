@@ -177,6 +177,7 @@ $(document).ready(function(){
                   <button type="submit"  class="btn btn-primary">Add</button>
               </div>
             </form>
+            
           </div>
       </div>
   </div>
@@ -198,7 +199,7 @@ $(document).ready(function(){
                 <th scope="col">Stock</th>
                 <th scope="col">Image</th>
                 <th scope="col">action</th>
-                <th scope="col">Offer</th>
+                <!-- <th scope="col">Offer</th> -->
                 <!-- <th scope="col">Discription</th> -->
               </tr>
             </thead>
@@ -223,8 +224,7 @@ $(document).ready(function(){
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                   </a>
                 </td>
-                <td><a href="/adminhome/applyoffer?id=<%= docs[i]._id  %>  "><button type="button"
-                  class="btn btn-outline-success">apply offer</button></a></td>
+                
               </tr>
               <% } %> 
             
