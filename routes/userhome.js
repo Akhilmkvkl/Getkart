@@ -467,7 +467,7 @@ router.get("/cancellorder", (req, res) => {
     });
 
   order
-    .deleteOne({ userid: ObjectId(session.userid), _id: ObjectId(id) })
+    .updateOne({ userid: ObjectId(session.userid), _id: ObjectId(id) },{$set:{status:"cancelled"}})
     .then(() => {
       console.log("order cancelled successfully");
       res.redirect("/userhome/order");
@@ -476,7 +476,19 @@ router.get("/cancellorder", (req, res) => {
 router.get("/success", (req, res) => {
   res.render("ordersuccess");
 });
+//order delete
+router.get('/deleteorder',(req,res)=>{
+  const id=req.query.id
+  order
+    .deleteOne({ userid: ObjectId(session.userid), _id: ObjectId(id) })
+    .then(() => {
+      console.log("order deleted from the user panel successfully");
+      res.redirect("/userhome/order");
+    });
 
+})
+
+// profile
 router.get("/profile", (req, res) => {
   if (session.login) {
     users.findOne({ _id: ObjectId(session.userid) }).then((docs) => {

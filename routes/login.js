@@ -50,7 +50,7 @@ router.post('/',(req,res)=>{
         if(phone){
           console.log(phone.phone)
           const number=phone.phone
-          // res.render('otp',phone);
+        //   res.render('otp',phone);
         // userhelpers.sendOtp(number)
 
         // remove this after setting twilio
