@@ -98,6 +98,15 @@
         </div>
         <a href="/logoutad"> <button type="button" class="btn btn-success">Logout</button></a>
     </nav>
+    <div style="padding-left: 40vw;">
+
+
+        <a href="/adminhome/export_to_excel"><button class="btn btn-danger"> download Excel</button></a>
+
+
+
+
+    </div>
     <ul hidden>
         <% for(let i=0;i<label.length;i++){ %>
             <input type="text" class="sales" value="<%= label[i] %> ">
@@ -140,17 +149,17 @@
 
         }
 
-        
 
 
 
 
 
-       
+
+
 
         console.log(labels)
         console.log(field)
-        
+
 
         const ctxx = document.getElementById('mysales').getContext('2d');
         const myCharts = new Chart(ctxx, {

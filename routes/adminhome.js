@@ -11,6 +11,8 @@ const { route } = require("./userhome");
 const offer = require("../models/offer model");
 const category = require("../models/category model");
 const coupon = require("../models/coupon model");
+const excelJs = require("exceljs");
+const { resolveInclude } = require("ejs");
 
 router.get("/block", (req, res) => {
   const userId = req.query.id;
@@ -257,5 +259,57 @@ router.post("/add-coupon", (req, res) => {
     res.redirect("/adminhome/products");
   });
 });
+
+//excel chart operation 
+router.get("/export_to_excel", (req, res) => {
+   order.find()
+  .then((SalesReport)=>{
+    
+
+ console.log(SalesReport)
+  try {
+    const workbook = new excelJs.Workbook();
+
+    const worksheet = workbook.addWorksheet("Sales Report");
+
+    worksheet.columns = [
+      { header: "S no.", key: "s_no" },
+      { header: "OrderID", key: "_id" },
+      { header: "Date", key: "Date" },
+      { header: "Products", key: "prod" },
+      { header: "Method", key: "payment" },
+      { header: "status", key: "status" },
+      { header: "Amount", key: "amount" },
+    ];
+    let counter = 1;
+    SalesReport.forEach((report) => {
+      report.s_no = counter;
+      report.prod = "";
+      // report.name = report.userid;
+      report.products.forEach((eachproduct) => {
+        report.prod += eachproduct.productname + ", ";
+      });
+      worksheet.addRow(report);
+      counter++;
+    });
+
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+    });
+    
+
+    res.header(
+      "Content-Type",
+      "application/vnd.oppenxmlformats-officedocument.spreadsheatml.sheet"
+    );
+    res.header("Content-Disposition", "attachment; filename=report.xlsx");
+
+    workbook.xlsx.write(res);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+});
+// excel sales report end
 
 module.exports = router;
