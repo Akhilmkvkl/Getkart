@@ -1,7 +1,7 @@
 const  express = require('express');
 const session =require('express-session')
 const router = express.Router();
-const {users,admin}=require('../models/model')
+const {users,Admin}=require('../models/model')
 
 router.get('/',(req,res)=>{
     if(session.adminlogin){
@@ -22,7 +22,7 @@ router.get('/',(req,res)=>{
 router.post('/',(req,res,next)=>{
 
     const adminData=req.body
-    admin.findOne({email:adminData.email,password:adminData.password})
+    Admin.find({email:adminData.email,password:adminData.password})
     .then((result,err)=>{
         console.log(err)
         if(result){
