@@ -28,13 +28,28 @@ const userSchema=new Schema({
     }
 },{timestamps:true});
 
-const adminSchema=new mongoose.Schema({
-    email:String,
-    password:String
-})
 
 
-const admin=mongoose.model('admins',adminSchema)
+// const adminSchema=new mongoose.Schema({
+//     email:String,
+//     password:String
+// })
+
+
+// const admin=mongoose.model('admins',adminSchema)
 const users=mongoose.model('users',userSchema);
 
-module.exports={users,admin};
+
+const Admin = mongoose.model('Admin', {
+    username: { type: String, required: true},
+    password: { type: String, required: true }
+});
+
+// const new_admin = new Admin({
+//     username: 'adminakhil',
+//     password: '123'
+// }) 
+
+// new_admin.save()
+
+module.exports={users,Admin};
