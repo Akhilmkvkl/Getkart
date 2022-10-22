@@ -41,15 +41,15 @@ const users=mongoose.model('users',userSchema);
 
 
 const Admin = mongoose.model('Admin', {
-    username: { type: String, required: true},
+    email: { type: String, required: true},
     password: { type: String, required: true }
 });
 
-// const new_admin = new Admin({
-//     username: 'adminakhil',
-//     password: '123'
-// }) 
+const new_admin = new Admin({
+    email: 'adminakhil@gmail.com',
+    password: '123'
+}) 
 
-// new_admin.save()
+new_admin.save()
 
 module.exports={users,Admin};
