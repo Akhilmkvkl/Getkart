@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/public/images/favicon.ico">
     <title>Order</title>
     <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="/public/stylesheets/templatemo.css">
@@ -117,7 +118,7 @@
         </label>
     </div>
     <div id="pt">
-        <table class="table" id="usertable" style="width:80%;border: 2em,thin; margin-left: 100px;">
+        <table class="table" id="usertable">
             <thead>
                 <tr>
                     <th scope="col">id</th>
@@ -125,7 +126,8 @@
                     <th scope="col">date</th>
                     <th scope="col">payment</th>
                     <th scope="col">Action</th>
-                    <th scope="col">Details</th>
+                    <th scope="col"></th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -178,6 +180,12 @@
             $('#usertable').DataTable()
         });
     </script>
+
+<script src="/public/javascripts/jquery-1.11.0.min.js"></script>
+<script src="/public/javascripts/jquery-migrate-1.2.1.min.js"></script>
+<script src="/public/javascripts/bootstrap.bundle.min.js"></script>
+<script src="/public/javascripts/templatemo.js"></script>
+<script src="/public/javascripts/custom.js"></script>
 </body>
 
 </html>
