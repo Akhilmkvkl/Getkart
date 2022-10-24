@@ -63,7 +63,7 @@
                         <a class="nav-link" href="/adminhome/orders">orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/adminhome/orders">offer</a>
+                        <a class="nav-link" href="/adminhome/coupon">Coupon</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="/adminlogin">Home</a>
@@ -132,58 +132,8 @@ $(document).ready(function(){
         </div>
     </div>
 </div> 
-<div class="bs-example" style="padding-top: 20px;">
-  <!-- Button HTML (to Trigger Modal) -->
-  <a href="#myModal1" class="btn btn-lg btn-primary" data-toggle="modal">Add coupon</a>
-  
-  <!-- Modal HTML -->
-  <div id="myModal1" class="modal fade">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Enter Coupon ID</h5>
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-              <div class="modal-body">
-                  <form method="post" action="/adminhome/add-coupon">
-                      <div class="form-group">
-                          <label for="inputName">Coupon ID</label>
-                          <input type="text" name="couponId" class="form-control" id="inputName">
-                      </div>
-                      <div class="form-group">
-                        <label for="inputName">value</label>
-                        <input type="text" name="value" class="form-control" id="inputName">
-                    </div>
-                    <div class="form-group">
-                      <label for="inputName">Min amount</label>
-                      <input type="text" name="minvalue" class="form-control" id="inputName">
-                  </div>
-                  <div class="form-group">
-                    <label for="inputName">Max amount</label>
-                    <input type="text" name="maxamount" class="form-control" id="inputName">
-                </div>
-                <div class="form-group">
-                  <label for="inputName"> active date</label>
-                  <input type="date" name="actdate" class="form-control" id="inputName">
-              </div>
-              <div class="form-group">
-                <label for="inputName">End date</label>
-                <input type="date" name="enddate" class="form-control" id="inputName">
-            </div>
-                     
-                  
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="submit"  class="btn btn-primary">Add</button>
-              </div>
-            </form>
-            
-          </div>
-      </div>
-  </div>
-</div> 
-</div>    
+
+ 
 </body>
 </html>
 

@@ -246,18 +246,27 @@ router.get("/sales", (req, res) => {
 
 router.post("/add-coupon", (req, res) => {
   console.log(req.body);
-  const coupondetails = new coupon({
-    couponid: req.body.couponId,
-    couponvalue: req.body.value,
-    minamount: req.body.minvalue,
-    maxamount: req.body.maxamount,
-    uptodate: req.body.enddate,
-    fromdate: req.body.actdate,
-  });
-  coupondetails.save().then(() => {
-    console.log("coupon added successfully");
-    res.redirect("/adminhome/products");
-  });
+  if(req.body){
+    const coupondetails = new coupon({
+      couponid: req.body.couponId,
+      couponvalue: req.body.value,
+      minamount: req.body.minvalue,
+      maxamount: req.body.maxamount,
+      uptodate: req.body.enddate,
+      fromdate: req.body.actdate,
+    });
+    coupondetails.save().then(() => {
+      console.log("coupon added successfully");
+      res.redirect("/adminhome/coupon");
+    })
+    .catch(()=>{
+      res.redirect("/adminhome/coupon");
+    });
+    
+  }else{
+    res.redirect("/adminhome/coupon");
+  }
+  
 });
 
 //excel chart operation 
@@ -312,4 +321,28 @@ router.get("/export_to_excel", (req, res) => {
 });
 // excel sales report end
 
+router.get('/coupon',(req,res)=>{
+  coupon.find()
+  .then((coupons)=>{
+    if(coupons){
+      res.render('coupon',{coupons})
+    }else{
+      res.render('coupon',{coupons:""})
+    }
+  })
+  
+ 
+})
+
+
+router.post('/delete-coupon',(req,res)=>{
+  const id=req.query.id
+  coupon.deleteOne({_id:id})
+  .then(()=>{
+    res.redirect('/adminhome/coupon')
+  })
+  .catch(()=>{
+    res.redirect('/adminhome/coupon')
+  })
+})
 module.exports = router;

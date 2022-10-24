@@ -30,6 +30,7 @@ router.post('/',(req,res)=>{
           res.redirect('/login')
       }).catch((err)=>{
           console.log(err)
+          res.redirect('/signup')
       })
   }else{
     res.redirect('/signup')
