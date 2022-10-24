@@ -121,7 +121,7 @@
                       <h5 class="text-uppercase">items <%= docs.length %>
                       </h5>
                       <span id="totalprice">
-                        <%= FinalAmount %>
+                        ₹<%= FinalAmount %>
                       </span>
                     </div>
 
@@ -157,7 +157,7 @@
                     <div class="d-flex justify-content-between mb-5">
                       <h5 class="text-uppercase">Total price</h5>
                         <input type="text" id="finalamount" hidden value="<%= finalprice %>">
-                      <span id="finalcost">
+                      <span id="finalcost">₹
                           <%= finalprice %>
                         </span></strong>  
                     </div>
@@ -176,7 +176,7 @@
   </section>
 
 
-  ////coupon operation
+  
 
 
 
@@ -201,7 +201,7 @@
     })
   </script>
 
-  //quantity operation
+  
   
   <script>
     function QtyChange(userID, ProdId, count) {
