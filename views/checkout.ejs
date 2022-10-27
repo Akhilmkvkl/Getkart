@@ -71,7 +71,7 @@
 
                             <% } %>
 
-                                 
+
 
 
 
@@ -93,6 +93,13 @@
                         <div class="card-header py-3 bg-white">
                           <h5 class="mb-1">Payment</h5>
                         </div>
+
+
+
+
+
+
+
                         <div class="card-body">
                           <ul class="list-group list-group-flush">
 
@@ -108,6 +115,22 @@
                                 <%= price %>
                               </span>
                             </li>
+
+
+
+                            <h5 class="text-uppercase mb-3">Give code</h5>
+                            <div class="mb-5">
+
+                              <form id="coupon">
+                                <div class="form-outline">
+                                  <input type="text" name="couponId" id="form3Examplea2"
+                                    class="form-control form-control-lg" />
+                                  <label class="form-label" for="form3Examplea2">Enter your code</label>
+                                  <button type="submit"  value="coupon" class="btn btn-link">apply</button>
+                                </div>
+                              </form>
+
+                            </div>
 
 
                             <li class=" d-flex justify-content-center align-items-center px-0 mb-3">
@@ -176,7 +199,7 @@
 
                           </ul>
                           <div class="button d-grid ">
-                            <button style="background-color: #eb227ddb;  color: #ffff;" type="submit"
+                            <button style="background-color: #eb227ddb;  color: #ffff;" type="submit" value="checkout"
                               class="btn ">Checkout</button>
                           </div>
 
@@ -210,54 +233,83 @@
       </div>
     </div>
 
-  <div class="add-address">
-    <div class="bs-example">
-                              <!-- Button HTML (to Trigger Modal) -->
-                              <a href="#myModal" class="btn btn-lg btn-primary" data-toggle="modal">Add new address</a>
-                              
-                              <!-- Modal HTML -->
-                              <div id="myModal" class="modal fade">
-                                  <div class="modal-dialog">
-                                      <div class="modal-content">
-                                          <div class="modal-header">
-                                              <h5 class="modal-title">Enter address </h5>
-                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          </div>
-                                          <div class="modal-body">
-                                              <form method="post" action="/userhome/add-address">
-                                                  <div class="form-group">
-                                                      <label for="inputName">address</label>
-                                                      <input type="text" name="address" class="form-control" id="inputName">
-                                                  </div>
-                                                  <div class="form-group">
-                                                    <label for="inputName">pincode</label>
-                                                    <input type="text" name="pincode" class="form-control" id="inputName">
-                                                </div>
-                                                <div class="form-group">
-                                                  <label for="inputName">streetname</label>
-                                                  <input type="text" name="streetname" class="form-control" id="inputName">
-                                              </div>
-                                              <div class="form-group">
-                                                <label for="inputName">state</label>
-                                                <input type="text" name="state" class="form-control" id="inputName">
-                                            </div>
-                                              
-                                          </div>
-                                          <div class="modal-footer">
-                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                              <button type="submit"  class="btn btn-primary">Add</button>
-                                          </div>
-                                        </form>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                        </div>
+    <div class="add-address">
+      <div class="bs-example">
+        <!-- Button HTML (to Trigger Modal) -->
+        <a href="#myModal" class="btn btn-lg btn-primary" data-toggle="modal">Add new address</a>
+
+        <!-- Modal HTML -->
+        <div id="myModal" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Enter address </h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <form method="post" action="/userhome/add-address">
+                  <div class="form-group">
+                    <label for="inputName">address</label>
+                    <input type="text" name="address" class="form-control" id="inputName">
+                  </div>
+                  <div class="form-group">
+                    <label for="inputName">pincode</label>
+                    <input type="text" name="pincode" class="form-control" id="inputName">
+                  </div>
+                  <div class="form-group">
+                    <label for="inputName">streetname</label>
+                    <input type="text" name="streetname" class="form-control" id="inputName">
+                  </div>
+                  <div class="form-group">
+                    <label for="inputName">state</label>
+                    <input type="text" name="state" class="form-control" id="inputName">
+                  </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
-  
+
   <!--Section: Design Block-->
 
   </div>
+
+
+
+  <script>
+    
+    $("#coupon").submit((e) => {
+      console.log("ajax working for  coupon operations")
+      e.preventDefault()
+      console.log(e);
+
+      $.ajax({
+        url: '/userhome/applycoupon',
+        method: 'post',
+        data: { res: $('#form3Examplea2').val(), amount: $('#finalamount').val() },
+        success: (response) => {
+          if (response.change) {
+
+            location.reload()
+          }
+        }
+      })
+    })
+  
+  </script>
+
+
+
+
+
 
   <script>
     $("#checkout-form").submit((e) => {
@@ -268,7 +320,7 @@
         method: 'post',
         data: $('#checkout-form').serialize(),
         success: (response) => {
-          
+
           console.log("The response")
           console.log("hii")
           if (response.codSuccess) {

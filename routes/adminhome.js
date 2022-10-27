@@ -311,7 +311,7 @@ router.get("/export_to_excel", (req, res) => {
       "Content-Type",
       "application/vnd.oppenxmlformats-officedocument.spreadsheatml.sheet"
     );
-    res.header("Content-Disposition", "attachment; filename=report.xlsx");
+    res.header("Content-Disposition","attachment; filename=report.xlsx");
 
     workbook.xlsx.write(res);
   } catch (err) {

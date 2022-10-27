@@ -135,31 +135,31 @@
                       </select>
                     </div>
 
-                    <h5 class="text-uppercase mb-3">Give code</h5>
+                    <!-- <h5 class="text-uppercase mb-3">Give code</h5> -->
 
-                    <div class="mb-5">
+                    <!-- <div class="mb-5">
                       <form id="coupon">
-                      <div class="form-outline">
-                        <input type="text" name="couponId" id="form3Examplea2" class="form-control form-control-lg" />
-                        <label class="form-label" for="form3Examplea2">Enter your code</label>
-                        <button type="submit" class="btn btn-link">apply</button>
-                      </div>
-                    </form>
-                    <% if(validation.couponerr){ %> 
-                      <p style="color: red;">Cant't apply this coupon !</p>
-                      <% }else if(validation. couponsucces){%> 
-                        <p style="color:green;">Coupon applied successfully !</p>
-                        <% } %> 
-                    </div>
+                        <div class="form-outline">
+                          <input type="text" name="couponId" id="form3Examplea2" class="form-control form-control-lg" />
+                          <label class="form-label" for="form3Examplea2">Enter your code</label>
+                          <button type="submit" class="btn btn-link">apply</button>
+                        </div>
+                      </form>
+                      <% if(validation.couponerr){ %>
+                        <p style="color: red;">Cant't apply this coupon !</p>
+                        <% }else if(validation. couponsucces){%>
+                          <p style="color:green;">Coupon applied successfully !</p>
+                          <% } %>
+                    </div> -->
 
                     <hr class="my-4">
 
                     <div class="d-flex justify-content-between mb-5">
                       <h5 class="text-uppercase">Total price</h5>
-                        <input type="text" id="finalamount" hidden value="<%= finalprice %>">
+                      <input type="text" id="finalamount" hidden value="<%= finalprice %>">
                       <span id="finalcost">₹
-                          <%= finalprice %>
-                        </span></strong>  
+                        <%= finalprice %>
+                      </span></strong>
                     </div>
 
                     <a onclick="" href="/cart/checkout?id=<%= finalprice  %> "><button type="submit"
@@ -176,33 +176,15 @@
   </section>
 
 
-  
 
 
 
 
-  <script>
-    $("#coupon").submit((e)=>{
-      console.log("ajax working for  coupon operations")
-      e.preventDefault()
-      console.log(e);
-      
-      $.ajax({
-        url:'/userhome/applycoupon',
-        method:'post',
-        data:{res:$('#form3Examplea2').val(),amount:$('#finalamount').val()},
-        success:(response)=>{
-          if(response.change){
-            
-            location.reload()
-          }
-        }
-      })
-    })
-  </script>
 
   
-  
+
+
+
   <script>
     function QtyChange(userID, ProdId, count) {
       count = parseInt(count)

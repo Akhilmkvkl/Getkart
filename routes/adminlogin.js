@@ -31,6 +31,7 @@ router.post('/',(req,res,next)=>{
             console.log('Successfully Logined');
             users.find((err,docs)=>{
                 if(!err){
+                    
                     res.render('adminhome',{docs,num})
                 }
             })
