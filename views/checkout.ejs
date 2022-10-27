@@ -126,7 +126,7 @@
                                   <input type="text" name="couponId" id="form3Examplea2"
                                     class="form-control form-control-lg" />
                                   <label class="form-label" for="form3Examplea2">Enter your code</label>
-                                  <button type="submit"  value="coupon" class="btn btn-link">apply</button>
+                                  <button type="submit"  name="coupon" class="btn btn-link">apply</button>
                                 </div>
                               </form>
 
@@ -199,7 +199,7 @@
 
                           </ul>
                           <div class="button d-grid ">
-                            <button style="background-color: #eb227ddb;  color: #ffff;" type="submit" value="checkout"
+                            <button style="background-color: #eb227ddb;  color: #ffff;" type="submit" name="checkout"
                               class="btn ">Checkout</button>
                           </div>
 
@@ -303,7 +303,7 @@
         }
       })
     })
-  
+    
   </script>
 
 
@@ -312,6 +312,7 @@
 
 
   <script>
+    
     $("#checkout-form").submit((e) => {
       console.log("ajax working")
       e.preventDefault()
@@ -411,7 +412,6 @@
         }
       })
     }
-
 
   </script>
 
